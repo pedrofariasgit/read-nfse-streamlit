@@ -1,0 +1,18 @@
+# --- Leitura de PDF ---
+pdfplumber==0.11.4
+pdfminer.six==20231228
+PyMuPDF==1.23.26   # se usar fitz no extractor
+
+# --- Utilidades e parsing ---
+python-dateutil==2.9.0.post0
+pandas==2.2.2
+openpyxl==3.1.5
+xlsxwriter==3.1.2
+
+# --- Interface ---
+streamlit==1.38.0
+
+# --- OCR (opcional) ---
+# pytesseract==0.3.10
+# Pillow==10.4.0
+# opencv-python==4.10.0.84
