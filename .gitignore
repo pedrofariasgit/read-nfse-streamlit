@@ -1,0 +1,13 @@
+# venv e caches
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# logs/temp
+*.log
+.DS_Store
+
+# jupyter/streamlit temp (se aparecer)
+.ipynb_checkpoints/
+.streamlit/secrets.toml
