@@ -174,12 +174,26 @@ def parse_generic(text: str) -> dict:
                 numero_documento = cand
                 break
 
-    # ---- Série
+    # ---- Série (ignora falsos positivos como 'da', 'de', 'do')
     for pat in [r'(?:S[ÉE]RIE|SERIE)\s*[:–—\-]?\s*([A-Za-z0-9\-]+)']:
         m = re.search(pat, T, flags=re.IGNORECASE)
         if m:
-            serie = _clean(m.group(1))
+            serie_candidate = _clean(m.group(1)).strip()
+            # Ignorar termos genéricos sem número
+            if serie_candidate.lower() in {"da", "de", "do", "das", "dos"}:
+                serie_candidate = ""
+            # preferir tokens numéricos quando possível
+            if serie_candidate and not serie_candidate.isdigit():
+                # tenta extrair primeiro grupo numérico dentro do token (ex: "DPS900" -> 900)
+                mnum = re.search(r"(\d{1,6})", serie_candidate)
+                if mnum:
+                    serie_candidate = mnum.group(1)
+                else:
+                    # se não há dígitos, esvazia para evitar falso positivo
+                    serie_candidate = ""
+            serie = serie_candidate
             break
+
 
     # ---- Fallback por proximidade do rótulo, caso o número ainda esteja vazio
     if not numero_documento:
