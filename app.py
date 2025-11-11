@@ -3,7 +3,6 @@ import re
 import streamlit as st
 import pandas as pd
 from io import BytesIO
-from PyPDF2 import PdfReader
 
 from extractor import extract_text_bytes
 from parser_router import select_parser
@@ -31,18 +30,13 @@ def make_dataframe(registros: list) -> pd.DataFrame:
 # ---------- Helpers específicos ----------
 def pdf_has_text_bytes(file_bytes: bytes, min_chars: int = 50) -> bool:
     """
-    Detecta se o PDF (bytes) contém camada de texto pesquisável.
+    Detecta se o PDF (bytes) contém texto pesquisável usando extractor.extract_text_bytes.
     Retorna True se acumulou ao menos `min_chars` caracteres de texto.
+    (Evita dependência em PyPDF2.)
     """
     try:
-        reader = PdfReader(BytesIO(file_bytes))
-        total_chars = 0
-        for page in reader.pages:
-            txt = page.extract_text() or ""
-            total_chars += len(txt.strip())
-            if total_chars >= min_chars:
-                return True
-        return False
+        txt = extract_text_bytes(file_bytes)
+        return len(txt.strip()) >= min_chars
     except Exception:
         return False
 
