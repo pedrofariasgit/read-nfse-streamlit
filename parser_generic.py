@@ -4,7 +4,6 @@ from dateutil import parser as dtp
 from settings import DEFAULTS, FALLBACK_CLIENTE
 import unicodedata
 
-
 # ----------------------- Helpers -----------------------
 
 def _m(rx, text, flags=re.I):
